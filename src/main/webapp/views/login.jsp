@@ -27,7 +27,7 @@
               <input type="password" class="form-control" name="user_pwd"  id="user_pwd" placeholder="Password를 입력해 주세요"/>
             </div>
             <div class="text-center">
-              <button type="button" id="login_btn" class="btn btn-main text-center" >Login</button>
+              <button type="button" id="login_btn" class="btn btn-main text-center"  onclick="checkidpwd()">Login</button>
             </div>
           </form>
           <p class="mt-20">제품을 구매하시겠어요 ?<a href="/register">  회원가입하기</a></p>

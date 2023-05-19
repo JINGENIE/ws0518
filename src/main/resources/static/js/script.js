@@ -20,8 +20,19 @@ let login_form = {
 };
 
 
+//로그인시 검증
+function checkidpwd() {
+  var user_pwd = document.getElementById("user_pwd").value;
 
-
+  if (user_pwd.length === 6) {
+    // 비밀번호 길이가 6인 경우, 비밀번호 변경 페이지로 이동
+    // alert("임시 비밀번호를 사용하셨네요, 비밀번호 변경해주세요")
+    window.location.href = "/changeinfo";
+  } else {
+    // 비밀번호 길이가 6이 아닌 경우, 일반적인 로그인 처리를 수행합니다.
+    document.getElementById("login_form").submit(); // 로그인 폼 제출
+  }
+}
 /**
  * WEBSITE: https://themefisher.com
  * TWITTER: https://twitter.com/themefisher

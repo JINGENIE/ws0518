@@ -1,6 +1,8 @@
 <%--@@include('header.htm')--%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<!-- header 구간  -->
+<jsp:include page="/views/header.jsp" />
 <%--<jsp:include page="/views/header.jsp" />--%>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <!--kakao -->
@@ -41,6 +43,19 @@
             </div>
 
           </div>
+            <div class="form-group">
+                <label for="confirm_pwd" class="col-lg-2 control-label">비밀번호 확인</label>
+                <div class="col-lg-8">
+                    <input type="password" class="form-control" id="confirm_pwd" name="confirm_pwd" placeholder="비밀번호를 다시 입력하세요."  required>
+                </div>    <div class="col-lg-2">
+                        <button onclick="checkPassword()">검증</button>
+            </div>
+
+                    <div id="confirm_pwd_result"></div>
+
+
+
+            </div>
           <div class="form-group">
             <label for="user_name" class="col-lg-2 control-label">이름</label>
             <div class="col-lg-10">
@@ -78,6 +93,10 @@
                 <option value="m">남성</option>
                 <option value="f">여성</option>
               </select>
+                <div class="col-lg-10 col-lg-offset-2">
+                    <div id="regi_error"></div>
+                    <span id="register_error" class="error"></span>
+                </div>
             </div>
           </div>
           <div class="form-group">
@@ -114,6 +133,15 @@
         width: 70px;
         cursor: pointer;
     }
+
+
+    input[type="text"]{
+        width: 370px;
+    }
+    input[type="password"]{
+        width: 370px;
+    }
+
 </style>
 
 

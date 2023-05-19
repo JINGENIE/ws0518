@@ -2,21 +2,25 @@
 
 let register_form = {
     init: function () {
-        $('#register_btn').click(function () {
-            let user_name = $("#user_name").val;
-            let user_pwd = $("#user_pwd").val;
-            let user_gender = $("#user_gender option:selected").val;
-            let user_address = $("#user_address").val;
-            let user_birthday = $("#user_birthday").val;
-            console.log("user_pwd.length---------------------------------");
-            console.log(user_pwd.length());
-            console.log("user_pwd.length---------------------------------");
-            if(user_pwd.length() < 8 ){
-                document.getElementById("pwd_result").innerHTML = "비밀번호를 8자리 이상입력해주세요.";
-                alert("비밀번호를 8자리 이상 입력해주세요");
+        $('.register_btn').click(function () {
+            let user_name = $("#user_name").val();
+            let user_pwd = $("#user_pwd").val();
+            let user_gender = $("#user_gender option:selected").val();
+            let user_address = $("#user_address").val();
+            let user_birthday = $("#user_birthday").val();
+
+            if( user_name == ""  || user_pwd ==  ""  || user_gender == ""  ||
+                user_address ==  ""  || user_birthday == "" ) {
+                alert("회원가입 창의 모든 값을 입력해주세요.");
+                return;
+            }if( user_pwd.length < 8 ){
+                document.getElementById("result_pwd").innerHTML = "8자리 이상 비밀번호를 입력해주세요";
                 return;
             }
-            register_form.send();
+            else {
+                register_form.send();
+            }
+
         });
     },
     send: function () {
@@ -84,7 +88,7 @@ function checkUserId() {
     $.ajax({
         url: "/checkUserId",
         type: "GET",
-        data: { user_id: userId },
+        data: {user_id: userId},
         success: function (result) {
             if (result == "success") {
                 document.getElementById("result").innerHTML = "사용 가능한 아이디입니다.";
@@ -97,3 +101,34 @@ function checkUserId() {
         }
     });
 }
+    function checkPassword() {
+        let user_pwd = document.getElementById("user_pwd").value;
+        let confirm_pwd = document.getElementById("confirm_pwd").value;
+        if (user_pwd.length < 8 && user_pwd !== confirm_pwd) {
+            alert("입력하신 비밀번호를 모두 확인해주세요, 비밀번호는 8자리 이상 입력가능합니다.");
+            $("#user_pwd").val(""); // 초기화
+            $("#confirm_pwd").val("");
+            $("#user_pwd").focus(); // 비밀번호 입력으로 돌아가기
+            return;
+        }
+        else if (user_pwd !== confirm_pwd ) {
+            alert("비밀번호가 일치하지 않습니다.");
+            $("#user_pwd").val("");
+            $("#confirm_pwd").val("");
+            $("#user_pwd").focus();
+            return;
+        }
+        else if (user_pwd.length < 8) {
+            alert("비밀번호는 8자리 이상 입력해주세요");
+            $("#user_pwd").val("");
+            $("#confirm_pwd").val("");
+            $("#user_pwd").focus();
+            return;
+        }
+        else if(user_pwd.length >= 8 && user_pwd == confirm_pwd  ) {
+            // 비밀번호가 일치할 때의 동작
+            document.getElementById("user_name").focus();
+            alert("사용할 수 있는 비밀번호 입니다.")
+        }
+    }
+

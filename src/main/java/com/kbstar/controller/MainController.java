@@ -69,19 +69,27 @@ public class MainController {
     @RequestMapping("/loginimpl")
     public String loginimpl(Model model, String user_id, String user_pwd, HttpSession session) throws Exception {
         String nextPage = "loginfail";
-        List<Product> list = null;
-        list = productService.get();
-
+        List<Product> list =productService.get();
+        User user = userService.get(user_id);
         try {
-            User user = userService.get(user_id);
             if (user != null && encoder.matches(user_pwd, user.getUser_pwd())) {
-                session.setMaxInactiveInterval(100000);
-                session.setAttribute("loginuser", user);
-                session.setAttribute("allproduct", list);
-                //dir+ center로만 하면 procuct를 못가져와서, product 정보를 로그인 후 화면에 뿌려주기
-                model.addAttribute("center", dir + "center");
-                //아이디와 비밀번호가 맞으면, shop center로 랜딩
-            } else {
+                log.info(String.valueOf(user_pwd.length()));
+                if(user_pwd.length() == 6){
+                    session.setMaxInactiveInterval(100000);
+                    session.setAttribute("loginuser", user);
+                    session.setAttribute("allproduct", list);
+                    model.addAttribute("center", "changeInfo");
+                }
+                else {
+                    session.setMaxInactiveInterval(100000);
+                    session.setAttribute("loginuser", user);
+                    session.setAttribute("allproduct", list);
+                    //dir+ center로만 하면 procuct를 못가져와서, product 정보를 로그인 후 화면에 뿌려주기
+                    model.addAttribute("center", dir + "center");
+                    //아이디와 비밀번호가 맞으면, shop center로
+                }
+            }
+            else {
                 model.addAttribute("center", nextPage);
                 //그 외의 경우 nextpage
             }
@@ -188,18 +196,12 @@ public class MainController {
     public String search(@RequestParam("product_name") String productName, Model model) {
         try {
             ProductSearch ps = new ProductSearch();
-            log.info("aaaaaaaaaaaa검색어");
-            log.info(productName);
-
             ps.setProduct_name(productName); // 검색어 설정
-            log.info("cccccccccccccccccccc");
             log.info(productService.search(ps).toString());
             List<Product> productList = productService.search(ps); // 상품 검색 수행
-            log.info("aaaaaaaaaaaaaaaaaaaaaaaaaa00");
             log.info(productList.toString());
             model.addAttribute("plist", productList);
             model.addAttribute("center", dir + "searchcenter");
-
             return "index"; // 검색 결과를 보여주는 화면으로 이동
 
         } catch (Exception e) {
@@ -214,7 +216,6 @@ public class MainController {
     public Object addcart(Model model, Cart cart) throws Exception {
 
         if (cart.getCart_quantity() == null) {
-            log.info("00000000000000000000000000000000000000000000");
             cart.setCart_quantity(0);
         }
         cartService.register(cart);
